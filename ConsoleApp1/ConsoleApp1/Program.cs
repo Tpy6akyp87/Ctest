@@ -46,22 +46,18 @@ namespace ConsoleApp1
             end = 0;
             for (int i = 0; i <= list.Count; i++)
             {
-                for (int j = i+1; j <= list.Count; j++)
+                tSum = 0;
+                for (int j = i; j <= list.Count; j++)
                 {
-                    tSum = 0;
-                    for (int k = i; k < j; k++)
+                    tSum += list[j];
+                    if (tSum == sum)
                     {
-                        tSum += list[k];
-                        if (tSum == sum)
-                        {
-                            Console.WriteLine("попался!" + tSum + " i= "+i+" j= "+j);
-                            start = i;
-                            end = j;
-                            gotFlag = true;
-                        }
-                        if (gotFlag) break;
+                        Console.WriteLine($"попался! tSum = {tSum}, start = {i}, end = {j+1}");
+                        start = i;
+                        end = j+1;
+                        gotFlag = true;
                     }
-                    if (gotFlag) break;
+                    if (gotFlag || tSum > sum) break;
                 }
                 if (gotFlag) break;
             }
