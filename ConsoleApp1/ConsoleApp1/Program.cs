@@ -8,11 +8,12 @@ namespace ConsoleApp1
         private static int start;
         private static int end;
         private static ulong tSum;
-        private static bool gotFlag;
+        private static bool gotFlag = false;
+        static Random random = new Random();
         static void Main(string[] args)
         {
             Console.WriteLine("Дан List<uint> list и некое число ulong sum. Ожидаемое количество элементов в list - несколько миллионов. Необходимо написать метод FindElementsForSum, который сможет найти наименьшие индексы start и end такие, что сумма элементов list начиная с индекса start включительно и до индекса end не включительно будет в точности равна sum. Если таких start и end нельзя найти, то установить start и end равными 0");
-
+            List<uint> list = new List<uint>();
             //Console.WriteLine("Введите размер массива:");
             //int len = int.Parse(Console.ReadLine());
             //uint[] arr = new uint[len];
@@ -23,15 +24,13 @@ namespace ConsoleApp1
             //    arr[i] = uint.Parse(arrayNumber[i]);
             //}
             //List<uint> list = arr.ToList();
- 
-            List<uint> list = new List<uint>();
 
-            Console.WriteLine("Введите размер списка:");
-            int len = int.Parse(Console.ReadLine());
-            for (int i = 0; i < len; i++)
+            //Console.WriteLine("Введите размер списка:");
+            //int len = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < 1000000; i++)
             {
-                Console.WriteLine("Введите значение: ");
-                list.Add(uint.Parse(Console.ReadLine())); 
+                list.Add((uint) random.Next(1000)); 
             }
 
             Console.WriteLine("Введите sum:");
@@ -46,22 +45,23 @@ namespace ConsoleApp1
             end = 0;
             for (int i = 0; i <= list.Count; i++)
             {
+                tSum = 0;
                 for (int j = i+1; j <= list.Count; j++)
                 {
-                    tSum = 0;
-                    for (int k = i; k < j; k++)
+                    tSum += list[j-1];
+                    if (tSum == sum)
                     {
-                        tSum += list[k];
-                        if (tSum == sum)
+                        Console.WriteLine("попался!" + tSum + " i= "+i+" j= "+j);
+                        start = i;
+                        end = j;
+                        gotFlag = true;
+
+                        for (int k = i; k < j; k++)
                         {
-                            Console.WriteLine("попался!" + tSum + " i= "+i+" j= "+j);
-                            start = i;
-                            end = j;
-                            gotFlag = true;
+                            Console.WriteLine(k+"й элемент = " + list[k]);
                         }
-                        if (gotFlag) break;
                     }
-                    if (gotFlag) break;
+                    if (gotFlag || tSum > sum) break;
                 }
                 if (gotFlag) break;
             }
